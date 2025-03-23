@@ -1,26 +1,33 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
-</template>
+<script setup>
+import { ref } from 'vue'
+import SearchInput from './components/SearchInput.vue';
+import WeatherCard from './components/WeatherCard.vue';
+const places = ref([])
 
-<script>
-import HelloWorld from "./components/HelloWorld.vue";
-
-export default {
-  name: "App",
-  components: {
-    HelloWorld,
-  },
-};
-</script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+const addPlace = (data) => {
+  places.value.push(data)
 }
-</style>
+
+</script>
+<template>
+  
+  <main>
+    <!-- Date -->
+     <div class="text-center mb-6">
+      {{ new Date().toLocaleDateString('len-us',{
+        weekday: 'long',
+        year: 'numeric',
+        month:'long',
+        day:'numeric'
+      }) }}
+     </div>
+
+    <!-- Search -->
+     <SearchInput @place-data="addPlace"/>
+    
+    <!-- Weather Cards -->
+     <div v-for="(place, idx) in places" :key="idx">
+      <WeatherCard :place="place"/>
+     </div>
+  </main>
+</template>
